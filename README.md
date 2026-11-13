@@ -20,7 +20,7 @@ Lightweight, high-FPS Linux desktop system-audio visualizer built in **Rust** wi
 3. **Vulkan Shader Engine (`src/visualizer.rs`)**
    - Attaches a `wgpu::Surface` (`Backends::VULKAN`) directly onto the embedded native FLTK panel via `HasWindowHandle + HasDisplayHandle`.
    - Hot-reloads `.wgsl` shaders safely on disk edits (`F5` or automatic 250 ms polling).
-4. **52 Built-in MilkDrop / Poweramp-Style Shaders (`shaders/`)**
+4. **9784 Built-in MilkDrop / Poweramp-Style Shaders (`shaders/`)**
    - Spanning **Chaos**, **Fractal**, **Tunnel**, **Kaleidoscope**, **Particle**, **Waveform**, **Aurora**, **Neon**, **Plasma**, **Starfield**, and **Mandala**.
 
 ## Controls
