@@ -1,3 +1,11 @@
+
+
+
+<img width="650" height="603" alt="image" src="https://github.com/user-attachments/assets/d64c2afd-5602-43b8-b4ea-bbda91f3328d" />
+<img width="1410" height="963" alt="image" src="https://github.com/user-attachments/assets/466d7716-e199-4d4d-a0cf-691d98320878" />
+
+
+
 # Vulkan Audio Visualizer
 
 Lightweight, high-FPS Linux desktop system-audio visualizer built in **Rust** with **wgpu (Vulkan)**, **FLTK** (`raw-window-handle` 0.6 across X11 & Wayland), **rustfft**, and **PipeWire / PulseAudio Monitor** capture.
