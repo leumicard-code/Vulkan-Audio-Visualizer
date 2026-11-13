@@ -41,7 +41,7 @@ const MENU_BAR_H: i32 = 28;
 const WIN_MIN_W: i32 = 640;
 const WIN_MIN_H: i32 = 420;
 
-const VULKAN_ICON_PNG: &[u8] = include_bytes!("../assets/vulkan_icon_128.png");
+const APP_ICON_PNG: &[u8] = include_bytes!("../assets/app_icon_128.png");
 const VULKAN_ABOUT_PNG: &[u8] = include_bytes!("../assets/vulkan_logo_about.png");
 
 fn sanitize_menu_segment(text: &str) -> String {
@@ -53,7 +53,7 @@ fn sanitize_choice_label(text: &str) -> String {
 }
 
 fn load_vulkan_icon() -> Option<PngImage> {
-    PngImage::from_data(VULKAN_ICON_PNG).ok()
+    PngImage::from_data(APP_ICON_PNG).ok()
 }
 
 struct AppState {
@@ -116,6 +116,7 @@ fn main() {
     let mut main_win = Window::default()
         .with_size(init_w, init_h)
         .with_label("Vulkan Audio Visualizer");
+    main_win.set_xclass("io.github.leumicard_code.Vulkan-Audio-Visualizer");
     main_win.make_resizable(true);
     main_win.size_range(WIN_MIN_W, WIN_MIN_H, 0, 0);
     if let Some(icon) = load_vulkan_icon() {
@@ -776,13 +777,37 @@ fn rebuild_menu_bar(state: &SharedState) {
     );
 }
 
+/// Opens a sandbox-compatible directory picker, preferring the XDG Desktop Portal via
+/// `zenity` inside Flatpak so user-selected folders are mounted without `--filesystem=home`.
+fn pick_milkdrop_directory() -> Option<String> {
+    if std::path::Path::new("/.flatpak-info").exists() {
+        if let Ok(out) = std::process::Command::new("zenity")
+            .args([
+                "--file-selection",
+                "--directory",
+                "--title=Select MilkDrop (.milk) / Textures Directory",
+            ])
+            .output()
+        {
+            if out.status.success() {
+                let picked = String::from_utf8_lossy(&out.stdout).trim().to_string();
+                if !picked.is_empty() {
+                    return Some(picked);
+                }
+            }
+            return None;
+        }
+    }
+    dialog::dir_chooser("Select MilkDrop (.milk) / Textures Directory", "", false)
+}
+
 fn handle_deferred_action(state: &SharedState, action: DeferredUiAction) {
     match action {
         DeferredUiAction::OpenBrowser => open_preset_browser(state),
         DeferredUiAction::OpenAbout => open_about_dialog(state),
         DeferredUiAction::QuitApp => close_all_and_quit(state),
         DeferredUiAction::ImportFolder => {
-            if let Some(dir) = dialog::dir_chooser("Select MilkDrop (.milk) / Textures Directory", "", false) {
+            if let Some(dir) = pick_milkdrop_directory() {
                 let rf = {
                     let mut st = state.borrow_mut();
                     if !st.config.milkdrop_dirs.iter().any(|d| d == &dir) {
@@ -959,6 +984,7 @@ fn open_preset_browser(state: &SharedState) {
     let mut win = Window::default()
         .with_size(680, 560)
         .with_label(&format!("Presets & Search  ({wgsl_n} WGSL · {milk_n} MilkDrop)"));
+    win.set_xclass("io.github.leumicard_code.Vulkan-Audio-Visualizer");
     win.make_resizable(true);
     win.size_range(480, 360, 0, 0);
     if let Some(icon) = load_vulkan_icon() {
@@ -1270,6 +1296,7 @@ fn open_about_dialog(state: &SharedState) {
     let mut win = Window::default()
         .with_size(520, 440)
         .with_label("About Vulkan Audio Visualizer");
+    win.set_xclass("io.github.leumicard_code.Vulkan-Audio-Visualizer");
     win.make_resizable(false);
     if let Some(icon) = load_vulkan_icon() {
         win.set_icon(Some(icon));
@@ -1295,12 +1322,18 @@ fn open_about_dialog(state: &SharedState) {
         136,
         480,
         22,
-        "Vulkan™/® Logo: Khronos Group (Public Domain via Wikimedia Commons)",
+        "Vulkan\u{2122}/\u{00ae} Logo: Khronos Group (Public Domain) \u{00b7} Unaffiliated project",
     );
     khronos_lbl.set_label_size(11);
     khronos_lbl.set_label_color(Color::from_rgb(155, 165, 184));
 
-    let mut title_lbl = Frame::new(20, 164, 480, 28, "Vulkan Audio Visualizer v0.2.0");
+    let mut title_lbl = Frame::new(
+        20,
+        164,
+        480,
+        28,
+        concat!("Vulkan Audio Visualizer v", env!("CARGO_PKG_VERSION")),
+    );
     title_lbl.set_label_size(17);
 
     let err_line = err_note

@@ -643,6 +643,13 @@ fn load_system_font() -> Option<FontArc> {
         "/usr/share/fonts/cantarell/Cantarell-Regular.otf",
         "/usr/share/fonts/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/run/host/fonts/TTF/NotoSans-Regular.ttf",
+        "/run/host/fonts/truetype/noto/NotoSans-Regular.ttf",
+        "/run/host/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/run/host/fonts/TTF/dejavu/DejaVuSans.ttf",
+        "/run/host/fonts/TTF/DejaVuSans.ttf",
+        "/run/host/fonts/cantarell/Cantarell-Regular.otf",
+        "/usr/share/fonts/tex-gyre/texgyreheros-regular.otf",
     ];
     for p in preferred {
         if let Ok(bytes) = std::fs::read(p) {

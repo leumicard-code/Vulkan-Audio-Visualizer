@@ -710,6 +710,7 @@ impl PresetManager {
 fn discover_milkdrop_and_texture_dirs(extra_dirs: &[String]) -> (Vec<PathBuf>, Vec<PathBuf>) {
     let mut candidates: Vec<PathBuf> = Vec::new();
     candidates.push(app_config_dir().join("milkdrop"));
+    candidates.push(PathBuf::from("/app/share/vulkan-audio-studio/milkdrop"));
     candidates.push(PathBuf::from("/home/shay/code1/milkdrop_presets/cream-of-the-crop"));
     candidates.push(PathBuf::from("/workspace/milkdrop_presets/cream-of-the-crop"));
     candidates.push(PathBuf::from("../milkdrop_presets/cream-of-the-crop"));
@@ -757,6 +758,7 @@ fn discover_milkdrop_and_texture_dirs(extra_dirs: &[String]) -> (Vec<PathBuf>, V
     // Standard standalone texture paths
     for td in [
         app_config_dir().join("textures"),
+        PathBuf::from("/app/share/vulkan-audio-studio/textures"),
         PathBuf::from("/home/shay/code1/milkdrop_presets/textures/textures"),
         PathBuf::from("/workspace/milkdrop_presets/textures/textures"),
         PathBuf::from("../milkdrop_presets/textures/textures"),
@@ -810,6 +812,10 @@ fn resolve_shader_dir() -> PathBuf {
     let local_shaders = PathBuf::from("shaders");
     if local_shaders.is_dir() {
         return local_shaders;
+    }
+    let bundled_shaders = PathBuf::from("/app/share/vulkan-audio-studio/shaders");
+    if bundled_shaders.is_dir() {
+        return bundled_shaders;
     }
     app_config_dir().join("shaders")
 }

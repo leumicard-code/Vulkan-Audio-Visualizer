@@ -1,10 +1,12 @@
 [package]
 name = "vulkan_audio_studio"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Shay Kadosh"]
-description = "Linux Desktop System-Audio Vulkan Visualizer (PipeWire/PulseAudio Monitor + wgpu + FLTK)"
+description = "Linux Desktop System-Audio Vulkan Visualizer (PipeWire/PulseAudio Monitor + wgpu + MilkDrop)"
 license = "MIT"
+repository = "https://github.com/leumicard-code/Vulkan-Audio-Visualizer"
+homepage = "https://github.com/leumicard-code/Vulkan-Audio-Visualizer"
 
 [dependencies]
 ab_glyph = "0.2"
